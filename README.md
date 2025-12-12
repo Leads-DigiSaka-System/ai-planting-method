@@ -70,28 +70,35 @@ composite = create_linear_interpolated_timeseries(
 ```
 2. Export as TFRecord 
 ```python 
-# Export to Google Drive
+# Configure export parameters
+OUTPUT_FOLDER = 'tfrecord'  # Google Drive folder name
+PREFIX = 'S1_composite_dry2025'
+PATCH_SIZE = 256  # 256x256 pixel patches
+SCALE = 10  # 10m resolution for Sentinel-2
+
+# Start export
 export_tasks = export_composite_as_tfrecord(
-    composite=composite_masked,
+    composite=composite_mask,
     tiles=tiles,
-    output_folder='sentinel1_tfrecords',
-    prefix='S1_dry2025',
-    patch_size=256,
-    scale=10
+    output_folder=OUTPUT_FOLDER,
+    prefix=PREFIX,
+    patch_size=PATCH_SIZE,
+    scale=SCALE
 )
 
 # Monitor progress
 monitor_export_tasks(export_tasks)
 ```
+
 ### Output Formats
 ```bash 
 output_folder/
-├── S1_dry2025_tile_001.tfrecord.gz
-├── S1_dry2025_tile_002.tfrecord.gz
-├── S1_dry2025_tile_003.tfrecord.gz
+├── S1_composite_dry2025_tile_001.tfrecord.gz
+├── S1_composite_dry2025_tile_002.tfrecord.gz
+├── S1_composite_dry2025_tile_003.tfrecord.gz
 └── ...
 
-Each patch: 256x256 pixels @ 10m = 2.56km x 2.56km
+Each patch: 256x256 pixels 
 Bands: 18 (0_VH through 17_VH)
 ```
 ### Data Specifications
